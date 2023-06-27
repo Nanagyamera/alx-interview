@@ -4,6 +4,9 @@ A function that defines the pascal's triangle
 """
 
 def pascal_triangle(n):
+    """
+    first checks if n is less than or equal to 0. If so, it returns an empty list
+    """
     if n <= 0:
         return []
 
