@@ -3,6 +3,7 @@
 A function that defines the pascal's triangle
 """
 
+
 def pascal_triangle(n):
     """
     first checks if n is less than or equal to 0 and returns an empty list
