@@ -3,6 +3,7 @@
 A function that determines if boxes can be opened
 """
 
+
 def canUnlockAll(boxes):
     n = len(boxes)
     visited = [False] * n
