@@ -3,46 +3,36 @@
 script that reads stdin line by line and computes metrics
 """
 import sys
-from collections import defaultdict
 
+def print_stats(total_size, status_counts):
+    print(f"File size: {total_size}")
+    for status_code in sorted(status_counts.keys()):
+        print(f"{status_code}: {status_counts[status_code]}")
 
-def compute_metrics():
-    # Variables to store metrics
-    total_file_size = 0
-    status_code_counts = defaultdict(int)
-
-    # Counter for lines processed
-    line_count = 0
+def main():
+    total_size = 0
+    status_counts = {}
 
     try:
-        for line in sys.stdin:
-            # Remove leading/trailing whitespace and split the line
+        for i, line in enumerate(sys.stdin, start=1):
             line = line.strip()
             parts = line.split()
+            
+            if len(parts) != 9 or parts[2] != "GET" or not parts[6].isdigit():
+                continue
 
-            if len(parts) == 7:
-                # Parse the file size as an integer
-                file_size = int(parts[6])
+            ip, _, _, _, _, _, status_code, file_size = parts
+            status_code = int(status_code)
+            file_size = int(file_size)
 
-                # Update metrics
-                total_file_size += file_size
-                status_code_counts[parts[4]] += 1
+            total_size += file_size
+            status_counts[status_code] = status_counts.get(status_code, 0) + 1
 
-                line_count += 1
-
-            if line_count % 10 == 0:
-                # Print statistics after every 10 lines
-                print("Total file size:", total_file_size)
-                for status_code in sorted(status_code_counts.keys(), key=int):
-                    print(status_code + ":", status_code_counts[status_code])
-                print()
+            if i % 10 == 0:
+                print_stats(total_size, status_counts)
 
     except KeyboardInterrupt:
-        # If interrupted by CTRL + C, print the final statistics
-        print("Total file size:", total_file_size)
-        for status_code in sorted(status_code_counts.keys(), key=int):
-            print(status_code + ":", status_code_counts[status_code])
-        print()
+        print_stats(total_size, status_counts)
 
 if __name__ == "__main__":
-    compute_metrics()
+    main()
