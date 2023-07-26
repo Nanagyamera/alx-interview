@@ -3,7 +3,6 @@
 Main file for testing
 """
 
-
 def validUTF8(data):
     def get_num_bytes_for_utf8(char):
         if char & 0x80 == 0x00:  # 1-byte character (0xxxxxxx)
