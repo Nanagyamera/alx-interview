@@ -38,7 +38,7 @@ def solve_nqueens(N):
         N Queens problem.
         """
         if row == N:
-            solutions.append([(row, col) for col in range(N) if board[row][col] == 1])
+            solutions.append([(row, col) for col in range(N)])
             return
 
         for col in range(N):
