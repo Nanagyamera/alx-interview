@@ -27,7 +27,8 @@ def is_safe(board, row, col, N):
 
 
 def solve_nqueens(N):
-    """Solves the N Queens problem and returns a list of all valid solutions.
+    """
+    Solves the N Queens problem and returns a list of all valid solutions.
     """
     board = [[0 for _ in range(N)] for _ in range(N)]
     solutions = []
