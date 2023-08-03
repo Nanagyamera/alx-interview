@@ -6,7 +6,9 @@ import sys
 
 
 def is_safe(board, row, col, N):
-    # Check if there is a queen in the same column
+    """
+    Check if there is a queen in the same column
+    """
     for i in range(row):
         if board[i][col] == 1:
             return False
@@ -25,12 +27,18 @@ def is_safe(board, row, col, N):
 
 
 def solve_nqueens(N):
+    """Solves the N Queens problem and returns a list of all valid solutions.
+    """
     board = [[0 for _ in range(N)] for _ in range(N)]
     solutions = []
 
     def backtrack(row):
+        """
+        Backtracking function to explore valid solutions for the
+        N Queens problem.
+        """
         if row == N:
-            solutions.append(["".join("Q" if col == 1 else "." for col in row) for row in board])
+            solutions.append([(row, col) for col in range(N) if board[row][col] == 1])
             return
 
         for col in range(N):
@@ -60,8 +68,7 @@ def main():
 
     solutions = solve_nqueens(N)
     for solution in solutions:
-        print("\n".join(solution))
-        print()
+        print(solution)
 
 
 if __name__ == "__main__":
