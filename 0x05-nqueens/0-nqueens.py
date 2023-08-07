@@ -70,6 +70,8 @@ def main():
         sys.exit(1)
 
     solutions = solve_nqueens(N)
+    print(len(solutions))  # Print the total number of solutions
+
     for solution in solutions:
         print(solution)
 
