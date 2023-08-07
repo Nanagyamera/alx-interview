@@ -40,7 +40,7 @@ def solve_nqueens(N):
         """
         if row == N:
             solutions.append(
-                [(row, col) for col in range(N) if board[row][col] == 1]
+                [(row, col) for col in range(N) if board[row - 1][col] == 1]
             )
             return
 
