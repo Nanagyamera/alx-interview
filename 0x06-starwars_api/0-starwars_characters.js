@@ -1,8 +1,8 @@
 #!/usr/bin/node
 const request = require('request');
 
-function getMovieCharacters (movieId) {
-  const url = `https://swapi.dev/api/films/${movieId}/`;
+function getMovieCharacters(movieId) {
+  const API_URL = 'https://swapi-api.hbtn.io/api';
 
   request(url, (error, response, body) => {
     if (error) {
