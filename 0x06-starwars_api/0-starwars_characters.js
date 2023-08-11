@@ -1,43 +1,25 @@
 #!/usr/bin/node
 const request = require('request');
+const API_URL = 'https://swapi-api.hbtn.io/api';
 
-function getMovieCharacters(movieId) {
-  const API_URL = 'https://swapi-api.hbtn.io/api';
-
-  request(url, (error, response, body) => {
-    if (error) {
-      console.error(`Error fetching movie data for ID ${movieId}:`, error);
-      return;
+if (process.argv.length > 2) {
+  request(`${API_URL}/films/${process.argv[2]}/`, (err, _, body) => {
+    if (err) {
+      console.log(err);
     }
-
-    if (response.statusCode === 200) {
-      const movieData = JSON.parse(body);
-      const characters = movieData.characters;
-
-      characters.forEach(characterUrl => {
-        request(characterUrl, (characterError, characterResponse, characterBody) => {
-          if (characterError) {
-            console.error(`Error fetching character data for URL ${characterUrl}:`, characterError);
-            return;
+    const charactersURL = JSON.parse(body).characters;
+    const charactersName = charactersURL.map(
+      url => new Promise((resolve, reject) => {
+        request(url, (promiseErr, __, charactersReqBody) => {
+          if (promiseErr) {
+            reject(promiseErr);
           }
-
-          if (characterResponse.statusCode === 200) {
-            const characterData = JSON.parse(characterBody);
-            console.log(characterData.name);
-          } else {
-            console.error(`Error fetching character data for URL ${characterUrl}: Status ${characterResponse.statusCode}`);
-          }
+          resolve(JSON.parse(charactersReqBody).name);
         });
-      });
-    } else {
-      console.error(`Error fetching movie data for ID ${movieId}: Status ${response.statusCode}`);
-    }
-  });
-}
+      }));
 
-if (process.argv.length !== 3) {
-  console.log('Usage: node script.js <movie_id>');
-} else {
-  const movieId = process.argv[2];
-  getMovieCharacters(movieId);
+    Promise.all(charactersName)
+      .then(names => console.log(names.join('\n')))
+      .catch(allErr => console.log(allErr));
+  });
 }
