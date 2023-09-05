@@ -3,30 +3,27 @@
 Prime game module.
 """
 
-def is_prime(num):
-    if num <= 1:
-        return False
-    for j in range(2, int(num**0.5) + 1):
-        if num % j == 0:
-            return False
-    return True
 
 def isWinner(x, nums):
+    """Determines the winner of a prime game session with `x` rounds.
+    """
     if x < 1 or not nums:
         return None
-    
     marias_wins, bens_wins = 0, 0
-
-    for n in nums:
-        # Determine the number of prime numbers in the range [1, n]
-        primes_count = sum(1 for i in range(2, n + 1) if is_prime(i))
-        
-        # Update wins for Maria and Ben based on the count of prime numbers
-        if primes_count % 2 == 0:
-            bens_wins += 1
-        else:
-            marias_wins += 1
-
+    # generate primes with a limit of the maximum number in nums
+    n = max(nums)
+    primes = [True for _ in range(1, n + 1, 1)]
+    primes[0] = False
+    for i, is_prime in enumerate(primes, 1):
+        if i == 1 or not is_prime:
+            continue
+        for j in range(i + i, n + 1, i):
+            primes[j - 1] = False
+    # filter the number of primes less than n in nums for each round
+    for _, n in zip(range(x), nums):
+        primes_count = len(list(filter(lambda x: x, primes[0: n])))
+        bens_wins += primes_count % 2 == 0
+        marias_wins += primes_count % 2 == 1
     if marias_wins == bens_wins:
         return None
     return 'Maria' if marias_wins > bens_wins else 'Ben'
