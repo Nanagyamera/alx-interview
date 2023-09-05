@@ -39,14 +39,14 @@ def isWinner(x, nums):
                 for i in range(2, num + 1):
                     if is_prime(i):
                         """
-                        If a prime number is found, check the subgame
-                        after removing multiples
+                        If a prime number is found,
+                        check the subgame after removing multiples
                         """
                         subgame_result = can_win(num - i)
                         if not subgame_result:
                             """
-                            If the subgame result is False, the
-                            current player wins
+                            If the subgame result is False,
+                            the current player wins
                             """
                             memo[num] = True
                             break
