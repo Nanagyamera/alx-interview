@@ -28,8 +28,8 @@ def isWinner(x, nums):
             if num in memo:
                 return memo[num]
 
-            # If the number is 1, the player cannot make a move and loses
-            if num == 1:
+            # If the number is 1 or there are no prime numbers left to choose, the player cannot make a move and loses
+            if num <= 1 or not any(is_prime(i) for i in range(2, num + 1)):
                 memo[num] = False
             else:
                 # Assume the current player loses
@@ -38,16 +38,10 @@ def isWinner(x, nums):
                 # Check if there is a prime number that can be chosen
                 for i in range(2, num + 1):
                     if is_prime(i):
-                        """
-                        If a prime number is found,
-                        check the subgame after removing multiples
-                        """
+                        # If a prime number is found, check the subgame after removing multiples
                         subgame_result = can_win(num - i)
                         if not subgame_result:
-                            """
-                            If the subgame result is False,
-                            the current player wins
-                            """
+                            # If the subgame result is False, the current player wins
                             memo[num] = True
                             break
 
@@ -60,8 +54,8 @@ def isWinner(x, nums):
         results[n] = winner
 
     # Count the number of rounds won by each player
-    maria_wins = results.values().count("Maria")
-    ben_wins = results.values().count("Ben")
+    maria_wins = list(results.values()).count("Maria")
+    ben_wins = list(results.values()).count("Ben")
 
     # Determine the overall winner based on the number of rounds won
     if maria_wins > ben_wins:
